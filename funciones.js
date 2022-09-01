@@ -39,11 +39,11 @@ function checkOut(info){
 
     const mensaje = `El vehiculo con patente ${patente} permanecio ${tiempoEstacionado} estacionado. ¿desea retirarse?`
 
-    if(!confirm(mensaje)) return
-
     const garage = obtenerGarage().filter(vehiculo => vehiculo.patente !== patente)
     localStorage.setItem('garage',JSON.stringify(garage))
     cargarVehiculos()
+
+    return mensaje
 }
 
 const obtenerGarage = () => {
@@ -77,7 +77,14 @@ function validarPatente(patente){
     let patenteNueva = /^[a-zA-Z]{3}[0-9]{3}$/
     if(patenteVieja.test(patente) || patenteNueva.test(patente)){
         return patente
-    }else{
-        return false
     }
+    return patente.value =''
+}
+
+function validarNombre(propietario){
+    let nombre = /^[a-zA-Z]{3,15}$/
+    if(nombre.test(propietario)){
+        return propietario
+    }else{
+    return propietario.value=''}
 }

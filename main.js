@@ -8,27 +8,44 @@ cargarVehiculos()
 
 btn.addEventListener('click',()=>{
     const vehiculo = {
-        propietario: propietario.value,
+        propietario: validarNombre(propietario.value),
         patente: validarPatente(patente.value),
         entrada: new Date()
     }
     if(datosCompletos()){
-        if(vehiculo.patente === false && vehiculo.propietario.length > 3){
-            alert('Asegurate de ingresar bien la patente')
-        }else if(vehiculo.patente && vehiculo.propietario.length < 3){
-            alert('Asegurate de ingresar bien tu nombre')
+        if(vehiculo.propietario === ''){
+            Swal.fire('INGRESA UN NOMBRE CORRECTO',
+                    'EJEMPLO: ANA - LUIS')
+        }else if(vehiculo.patente ===''){
+            Swal.fire('INGRESA UNA PATENTE CORRECTA',
+                    'EJEMPLO: ABC123 - AB123CD')
         }else{
             guardarEnLocalStorage(vehiculo)
             ingresarVehiculo(vehiculo)
         }
     }else{
-        alert('Los campos deben estar completos')
+        Swal.fire('Los campos deben estar completos')
     }
 })
 
 let btnDelete = document.querySelector('#garage')
 btnDelete.addEventListener('click', e => {
-    if(e.target.className === 'delete'){
-        checkOut(e.target.parentElement.parentElement.cells)
-    }
+    let propietario = document.querySelector('#name')
+    Swal.fire({
+        title: 'Desea retirar el auto?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            if(e.target.className === 'delete'){
+                checkOut(e.target.parentElement.parentElement.cells)
+            }
+            Swal.fire(
+            'Su auto fue retirado con éxito.',
+          )
+        }
+      })
 })
